@@ -1,3 +1,8 @@
+function stopDefault (e) {
+
+    e.preventDefault();
+}
+
 function clearCepForm() {
 
     // This one clears the fields below if Cep is invalid or non-existent.
@@ -11,11 +16,14 @@ function clearCepForm() {
     localStorage.setItem('uf',"");
 }
 
-function meu_callback(conteudo) {
+function meuCallback(conteudo) {
 
     if (!("erro" in conteudo)) {
 
-        // If the Cep is valid, fills the address obtained from the API.
+        // If the Cep is valid, fills the address obtained from the API, and saves the other info in localStorage.
+        localStorage.setItem('nome', document.getElementById('nome').value);
+        localStorage.setItem('email', document.getElementById('email').value);
+        localStorage.setItem('cep', document.getElementById('cep').value);
         document.getElementById('logradouro').value=(conteudo.logradouro);
         localStorage.setItem('logradouro', conteudo.logradouro);
         document.getElementById('bairro').value=(conteudo.bairro);
@@ -56,7 +64,7 @@ function pesquisaCep(valor) {
             let script = document.createElement('script');
 
             // Element synced with the callback.
-            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meuCallback';
 
             // Inserts scripts in the document and load content.
             document.body.appendChild(script);
@@ -75,12 +83,17 @@ function pesquisaCep(valor) {
     }
 }
 
-function storedFields(event) {
+function storedFields() {
 
+    console.log(localStorage.getItem('nome'));
+    console.log(localStorage.getItem('email'));
+    console.log(localStorage.getItem('cep'));
     console.log(localStorage.getItem('logradouro'));
+    console.log(localStorage.getItem('bairro'));
+    console.log(localStorage.getItem('localidade'));
+    console.log(localStorage.getItem('uf'));
 
-    // and this is my headache
-    const warn = "test";
-    alert(warn);
-    event.preventDefault();
+    // const warn = "Form sent!";
+    // alert(warn);
+    document.getElementById('formCadastro').addEventListener('click',stopDefault);
 }
