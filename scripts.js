@@ -1,45 +1,37 @@
-// Array to store the inputs value. I think it's easier to use it as a debug over using localStorage alone
-const campos = ["nome", "email", "cep", "logradouro", "bairro", "localidade", "estado"];
+function stopDefault (e) {
 
-// variable to manipulate the submit button behavior
-const btn = document.getElementById('btn');
-
-// Get the initial values for when the page is loaded and throw it in the array above
-// I didn't manage to make the debug to work without this
-window.onload = () => {
-    campos.forEach(campo => {
-        const salvo = localStorage.getItem(campo);
-        if (salvo) document.getElementById(campo).value = salvo;
-    });
-};
-
-// Updates the value in campos[] each time a new value is brought by the fields
-campos.forEach(campo => {
-    document.getElementById(campo).addEventListener("input", () => {
-        localStorage.setItem(campo, document.getElementById(campo).value);
-    });
-});
+    e.preventDefault();
+}
 
 function clearCepForm() {
 
     // This one clears the fields below if Cep is invalid or non-existent.
     document.getElementById('rua').value=("");
+    localStorage.setItem('logradouro', "");
     document.getElementById('bairro').value=("");
-    document.getElementById('cidade').value=("");
+    localStorage.setItem('bairro', "");
+    document.getElementById('localidade').value=("");
+    localStorage.setItem('cidade',"");
     document.getElementById('uf').value=("");
-    document.getElementById('ibge').value=("");
+    localStorage.setItem('uf',"");
 }
 
-function meu_callback(conteudo) {
+function meuCallback(conteudo) {
 
     if (!("erro" in conteudo)) {
 
-        // If the Cep is valid, fills the address obtained from the API.
+        // If the Cep is valid, fills the address obtained from the API, and saves the other info in localStorage.
+        localStorage.setItem('nome', document.getElementById('nome').value);
+        localStorage.setItem('email', document.getElementById('email').value);
+        localStorage.setItem('cep', document.getElementById('cep').value);
         document.getElementById('logradouro').value=(conteudo.logradouro);
+        localStorage.setItem('logradouro', conteudo.logradouro);
         document.getElementById('bairro').value=(conteudo.bairro);
+        localStorage.setItem('bairro', conteudo.bairro);
         document.getElementById('localidade').value=(conteudo.localidade);
+        localStorage.setItem('localidade',conteudo.localidade);
         document.getElementById('uf').value=(conteudo.uf);
-        document.getElementById('ibge').value=(conteudo.ibge);
+        localStorage.setItem('uf', conteudo.uf);
     }
     else {
         // If the address wasn't found by the API, calls clearCepForm to... clear the form fields.
@@ -67,13 +59,12 @@ function pesquisaCep(valor) {
             document.getElementById('bairro').value="...";
             document.getElementById('localidade').value="...";
             document.getElementById('uf').value="...";
-            document.getElementById('ibge').value="...";
 
             // JS element.
             let script = document.createElement('script');
 
             // Element synced with the callback.
-            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meuCallback';
 
             // Inserts scripts in the document and load content.
             document.body.appendChild(script);
@@ -94,19 +85,15 @@ function pesquisaCep(valor) {
 
 function storedFields() {
 
-    // the idea of that function is preventing the page from reloading once the form is submitted
-    for(let i = 0; i <= campos.length; i++) {
+    console.log(localStorage.getItem('nome'));
+    console.log(localStorage.getItem('email'));
+    console.log(localStorage.getItem('cep'));
+    console.log(localStorage.getItem('logradouro'));
+    console.log(localStorage.getItem('bairro'));
+    console.log(localStorage.getItem('localidade'));
+    console.log(localStorage.getItem('uf'));
 
-        // this one is to check if the info was properly stored on the page's localStorage
-        // the array "campos" (meaning fields) is only used here
-        console.log(campos[i]);
-    }
-
-    // and this is my headache
-    btn.addEventListener('submit',(event) => {
-
-        // all works except for that preventDefault
-        event.preventDefault();
-        alert("Dados salvos com sucesso!");
-    });
+    // const warn = "Form sent!";
+    // alert(warn);
+    document.getElementById('formCadastro').addEventListener('click',stopDefault);
 }
