@@ -2,7 +2,7 @@ function clearCepForm() {
 
     // This one clears the fields below if Cep is invalid or non-existent.
     document.getElementById('rua').value=("");
-    localStorage.setItem('rua', "");
+    localStorage.setItem('logradouro', "");
     document.getElementById('bairro').value=("");
     localStorage.setItem('bairro', "");
     document.getElementById('localidade').value=("");
@@ -17,7 +17,7 @@ function meu_callback(conteudo) {
 
         // If the Cep is valid, fills the address obtained from the API.
         document.getElementById('logradouro').value=(conteudo.logradouro);
-        localStorage.setItem('rua', conteudo.logradouro);
+        localStorage.setItem('logradouro', conteudo.logradouro);
         document.getElementById('bairro').value=(conteudo.bairro);
         localStorage.setItem('bairro', conteudo.bairro);
         document.getElementById('localidade').value=(conteudo.localidade);
