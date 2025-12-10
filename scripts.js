@@ -1,7 +1,11 @@
-/* // Referências aos inputs
+// Array to store the inputs value. I think it's easier to use it as a debug over using localStorage alone
 const campos = ["nome", "email", "cep", "logradouro", "bairro", "localidade", "estado"];
 
-// Carregar dados salvos ao abrir a página
+// variable to manipulate the submit button behavior
+const btn = document.getElementById('btn');
+
+// Get the initial values for when the page is loaded and throw it in the array above
+// I didn't manage to make the debug to work without this
 window.onload = () => {
     campos.forEach(campo => {
         const salvo = localStorage.getItem(campo);
@@ -9,15 +13,16 @@ window.onload = () => {
     });
 };
 
-// Salvando dados automaticamente ao digitar
+// Updates the value in campos[] each time a new value is brought by the fields
 campos.forEach(campo => {
     document.getElementById(campo).addEventListener("input", () => {
         localStorage.setItem(campo, document.getElementById(campo).value);
     });
 });
-*/
-function limpa_formulario_cep() {
-    //Limpa valores do formulário de cep.
+
+function clearCepForm() {
+
+    // This one clears the fields below if Cep is invalid or non-existent.
     document.getElementById('rua').value=("");
     document.getElementById('bairro').value=("");
     document.getElementById('cidade').value=("");
@@ -26,33 +31,35 @@ function limpa_formulario_cep() {
 }
 
 function meu_callback(conteudo) {
+
     if (!("erro" in conteudo)) {
-        //Atualiza os campos com os valores.
+
+        // If the Cep is valid, fills the address obtained from the API.
         document.getElementById('logradouro').value=(conteudo.logradouro);
         document.getElementById('bairro').value=(conteudo.bairro);
         document.getElementById('localidade').value=(conteudo.localidade);
         document.getElementById('uf').value=(conteudo.uf);
         document.getElementById('ibge').value=(conteudo.ibge);
-    } //end if.
+    }
     else {
-        //CEP não Encontrado.
-        limpa_formulario_cep();
+        // If the address wasn't found by the API, calls clearCepForm to... clear the form fields.
+        clearCepForm();
         alert("CEP não encontrado.");
     }
 }
 
 function pesquisaCep(valor) {
 
-    //Nova variável "cep" somente com dígitos.
+    // Gets the numbers from Cep typed
     let cep = valor.replace(/\D/g, '');
 
-    //Verifica se campo cep possui valor informado.
+    // Checks if Cep has a value.
     if (cep !== "") {
 
-        //Expressão regular para validar o CEP.
+        // Validates CEP with a RegEx.
         let validaCep = /^[0-9]{8}$/;
 
-        //Valida o formato do CEP.
+        // Validates the format inserted. Cep needs to be a string containing 8 numbers.
         if(validaCep.test(cep)) {
 
             //Preenche os campos com "..." enquanto consulta webservice.
@@ -62,37 +69,43 @@ function pesquisaCep(valor) {
             document.getElementById('uf').value="...";
             document.getElementById('ibge').value="...";
 
-            //Cria um elemento javascript.
+            // JS element.
             let script = document.createElement('script');
 
-            //Sincroniza com o callback.
+            // Element synced with the callback.
             script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
 
-            //Insere script no documento e carrega o conteúdo.
+            // Inserts scripts in the document and load content.
             document.body.appendChild(script);
 
-        } //end if.
+        }
         else {
-            //cep é inválido.
-            limpa_formulario_cep();
+
+            // Invalid Cep.
+            clearCepForm();
             alert("Formato de CEP inválido.");
         }
-    } //end if.
+    }
     else {
-        //cep sem valor, limpa formulário.
-        limpa_formulario_cep();
+        // If CEP has no value, clears the form.
+        clearCepForm();
     }
 }
 
-function camposSalvos() {
+function storedFields() {
 
+    // the idea of that function is preventing the page from reloading once the form is submitted
+    for(let i = 0; i <= campos.length; i++) {
 
-    const btn = document.getElementById('btn');
-    /*for(let i = 0; i <= 6; i++) {
-
+        // this one is to check if the info was properly stored on the page's localStorage
+        // the array "campos" (meaning fields) is only used here
         console.log(campos[i]);
-    }*/
+    }
+
+    // and this is my headache
     btn.addEventListener('submit',(event) => {
+
+        // all works except for that preventDefault
         event.preventDefault();
         alert("Dados salvos com sucesso!");
     });
