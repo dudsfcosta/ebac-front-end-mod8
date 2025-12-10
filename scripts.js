@@ -6,12 +6,12 @@ function stopDefault (e) {
 function clearCepForm() {
 
     // This one clears the fields below if Cep is invalid or non-existent.
-    document.getElementById('rua').value=("");
+    document.getElementById('logradouro').value=("");
     localStorage.setItem('logradouro', "");
     document.getElementById('bairro').value=("");
     localStorage.setItem('bairro', "");
     document.getElementById('localidade').value=("");
-    localStorage.setItem('cidade',"");
+    localStorage.setItem('localidade',"");
     document.getElementById('uf').value=("");
     localStorage.setItem('uf',"");
 }
