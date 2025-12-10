@@ -1,0 +1,86 @@
+/* CSS reset */
+* {
+
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    
+    font-family: Roboto, sans-serif;
+    line-height: 1.6;
+    color: #10001F;
+    background-color: #f9f9f9;
+}
+
+header {
+
+    padding: 20px;
+    background: linear-gradient(0deg, rgba(169, 104, 237, 1) 0%, rgba(245, 130, 174, 1) 100%);
+    color: #f9f9f9;
+    text-align: center;
+}
+
+header h1 {
+
+    font-size: 24px;
+    margin-top: 10px;
+}
+
+header p {
+
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+form {
+    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form label {
+    
+    font-weight: bold;
+}
+
+form input {
+    
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+button {
+    
+    margin-top: 10px;
+    padding: 10px;
+    background-color: darkviolet;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    
+    background-color: deeppink;
+}
+
+section {
+
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    margin: 10px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+/* Footer */
+footer {
+
+    color: gray;
+    text-align: center;
+}
